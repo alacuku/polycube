@@ -1,0 +1,3 @@
+#variables used by the k8s-master
+
+node_ip: 192.168.0.10

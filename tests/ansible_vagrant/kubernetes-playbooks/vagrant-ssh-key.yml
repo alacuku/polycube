@@ -1,0 +1,14 @@
+---
+# Playbook used to configure the ssh key which is used to access the machines.
+# The same key is also used by ansible during the configuration.
+# The playbook is called by vagrant during the environment set up. 
+# Check the Vagrantfile if you need to change the playbook called during the initial set up
+
+- hosts: all
+  become: true
+  tasks:
+  - name: Set authorized key
+    authorized_key:
+      user: vagrant
+      state: present
+      key: "{{ lookup('file', '/home/aldo/.ssh/vagrant_machines.pub') }}" # Path where the pub key is located
