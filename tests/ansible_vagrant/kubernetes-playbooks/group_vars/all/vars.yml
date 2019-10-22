@@ -20,7 +20,7 @@ apt_packages:
 - software-properties-common
 
 #path to the public key used to ssh to the machines
-#pub_key_path: /home/aldo/.ssh/vagrant_machines.pub
+pub_key_path: /home/aldo/.ssh/vagrant_machines.pub
 
 #pod-network-cidr used in k8s
 pod_network_cidr: 10.244.0.0/16
@@ -30,3 +30,29 @@ user: vagrant
 
 # zone to which set the time
 time_zone: Europe/Rome
+
+
+#Node configuration. The cluster can have only one master node and many worker nodes as needed.
+k8s_master_node_ip: 192.168.0.10
+
+k8s_worker_node_ips:
+- 192.168.0.11
+- 192.168.0.12
+
+############################
+#Vagrant file configuration#
+############################
+
+#flavor of the operating system to be used in the VMs
+image_name: "ubuntu/bionic64"
+#the nic on your host to which the VM interface will be bridged.
+bridge_nic: enp1s0f0 
+
+#path to the public key used to ssh to the machines
+pub_key_path: /home/aldo/.ssh/vagrant_machines.pub
+
+#Amount of RAM memory for a single VM
+virtual_memory: 4096
+
+#Amount of Virtual CPUs for a single VM
+virtual_cpu: 2

@@ -1,0 +1,12 @@
+---
+# tasks file for bootstrap
+#This task generates the vagrant file for the VMs to be created.
+
+- name: Template the VagrantFile.j2 configuration file to ../Vagrantfile
+  template:
+    src: VagrantFile.j2
+    dest: ../Vagrantfile
+  delegate_to: localhost
+
+- name: Run "vagrant up" with the Vagrantfile as input.
+  command: vagrant up

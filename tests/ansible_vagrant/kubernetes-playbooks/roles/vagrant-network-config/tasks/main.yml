@@ -36,3 +36,4 @@
 #doing "netplan apply" stop systemd-networkd leaving the machine without connection    
 - name: Reboot the system 
   reboot:
+  

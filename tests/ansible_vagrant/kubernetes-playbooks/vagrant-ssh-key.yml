@@ -11,4 +11,10 @@
     authorized_key:
       user: vagrant
       state: present
-      key: "{{ lookup('file', '/home/aldo/.ssh/vagrant_machines.pub') }}" # Path where the pub key is located
+      key: "{{ lookup('file', pub_key_path) }}" # Path where the pub key is located
+
+  - name: sleep for 15 seconds and continue with play
+    become: false
+    wait_for:
+      timeout: 15
+    delegate_to: localhost
