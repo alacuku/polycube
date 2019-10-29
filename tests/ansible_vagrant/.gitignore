@@ -1,3 +1,6 @@
 .vagrant/
+kubernetes-playbooks/host_vars/
 *.log
-join-command
+kubernetes-playbooks/join-command
+Vagranfile
+kubernetes-playbooks/inventory.ini

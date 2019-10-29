@@ -78,22 +78,27 @@
     - sysctl -w net.bridge.bridge-nf-call-iptables=1
     - sysctl -w net.ipv4.ip_forward=1
 
-- name: Setup kubeconfig for user # user is defined in group_var/all
-  command: "{{ item }}"
-  with_items:
-   - mkdir -p /home/"{{ user }}"/.kube
-   - cp -i /etc/kubernetes/admin.conf /home/"{{ user }}"/.kube/config
-   - chown "{{ user }}":"{{ user }}" /home/"{{ user }}"/.kube/config
+- name: "Create the .kube directory for user: {{ user }}"
+  file:
+    path: "/home/{{ user }}/.kube"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+
+- name: Copy the kube config file with owner and permissions for the {{ user }} user
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "/home/{{ user }}/.kube/config"
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
 
 - name: Install polycube pod network
   become: false # because the admin.conf has been copied to the vagrant user.
-  command: "{{ item }}"
-  with_items:
-    - kubectl apply -f https://raw.githubusercontent.com/polycube-network/polycube/master/src/components/k8s/standalone_etcd.yaml
-    - kubectl apply -f https://raw.githubusercontent.com/polycube-network/polycube/master/src/components/k8s/pcn-k8s.yaml
-    #- kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-    #- kubectl create -f calico.yml
-    #- kubectl apply -f kube-flannel.yml
+  command: kubectl apply -f "{{ item }}"
+  with_items: "{{ cni_manifests }}"
 
 - name: Generate join command
   command: kubeadm token create --print-join-command
